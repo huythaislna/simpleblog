@@ -13,13 +13,15 @@ def home(request):
         posts = paginator.page(page)
     except PageNotAnInteger:
         posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
     context = {
         'posts':posts,
     }
     return render(request, 'tech-index.html', context)
 
-def detail(request, id):
-    post = get_object_or_404(Post, id=id)
+def detail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     context = {
         'post':post,
     }
@@ -37,8 +39,8 @@ def create(request):
     return render(request, 'tech-create.html', context)
 
 
-def update(request, id):
-    post = get_object_or_404(Post, id=id)
+def update(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     form = CreatePostForm(request.POST or None, request.FILES or None, instance=post)
     if form.is_valid():
         post = form.save(commit=False)
@@ -49,8 +51,8 @@ def update(request, id):
     }
     return render(request, 'tech-create.html', context)
 
-def topic(request, id):
-    topic = get_object_or_404(Topic, id=id)
+def topic(request, slug):
+    topic = get_object_or_404(Topic, slug=slug)
     posts = topic.get_posts
     context = {
         'topic':topic,
