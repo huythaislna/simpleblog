@@ -9,6 +9,9 @@ pylint = "*"
 [packages]
 django = "==1.9"
 gunicorn = "==19.9.0"
+django-markdown-deux = "*"
+pillow = "*"
+django-pagedown = "==0.1.1"
 
 [requires]
 python_version = "3.6"
