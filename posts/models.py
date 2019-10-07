@@ -15,6 +15,10 @@ class Post(models.Model):
     timestamp = models.DateField(auto_now_add=True)
     content = models.TextField()
     image = models.ImageField(upload_to='images/')
+    topic = models.ForeignKey(
+        'Topic',
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return self.title
@@ -25,3 +29,17 @@ class Post(models.Model):
     @property
     def get_markdown(self):
         return mark_safe(markdown(self.content))
+
+class Topic(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
+    
+    @property
+    def get_posts(self):
+        return Post.objects.filter(topic=self)
+
+    def get_absolute_url(self):
+        return reverse('posts:topic', kwargs={'id': self.pk})

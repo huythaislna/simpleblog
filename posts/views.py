@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .models import Post
+from .models import Post, Topic
 from .forms import CreatePostForm
 # Create your views here.
 
@@ -49,3 +49,11 @@ def update(request, id):
     }
     return render(request, 'tech-create.html', context)
 
+def topic(request, id):
+    topic = get_object_or_404(Topic, id=id)
+    posts = topic.get_posts
+    context = {
+        'topic':topic,
+        'posts':posts,
+    }
+    return render(request, 'tech-category-01.html', context)
