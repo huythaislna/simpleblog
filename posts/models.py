@@ -9,7 +9,7 @@ from django.db.models.signals import pre_save
 # Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=255)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         default=1,
@@ -22,6 +22,8 @@ class Post(models.Model):
         'Topic',
         on_delete=models.CASCADE,
     )
+    class Meta:
+        ordering = ["-timestamp"]
 
     def __str__(self):
         return self.title
